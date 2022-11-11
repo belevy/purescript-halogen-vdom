@@ -8,25 +8,25 @@
 // setAttribute
 
 
-exports.unsafeGetAny = function (key, obj) {
+export const unsafeGetAny = function (key, obj) {
   return obj[key];
 };
 
-exports.unsafeGetProp = function (key, obj) {
+export const unsafeGetProp = function (key, obj) {
   if (obj.props)
     return obj.props[key];
   else return;
 };
 
-exports.unsafeHasAny = function (key, obj) {
+export const unsafeHasAny = function (key, obj) {
   return obj.hasOwnProperty(key);
 };
 
-exports.unsafeSetAny = function (key, val, obj) {
+export const unsafeSetAny = function (key, val, obj) {
     obj[key] = val;
 };
 
-exports.unsafeSetProp = function (key, val, obj) {
+export const unsafeSetProp = function (key, val, obj) {
   if(key == "id2"){
     obj.__ref = {__id : val}
     obj.props.id = val
@@ -36,16 +36,16 @@ exports.unsafeSetProp = function (key, val, obj) {
   }
 };
 
-exports.removeProperty = function (key, val, obj) {
+export const removeProperty = function (key, val, obj) {
   obj.props[key] = val;
   delete obj.props[key];
 };
 
-exports.unsafeDeleteAny = function (key, obj) {
+export const unsafeDeleteAny = function (key, obj) {
   delete obj.props[key];
 };
 
-exports.forE = function (a, f) {
+export const forE = function (a, f) {
   var b = [];
   for (var i = 0; i < a.length; i++) {
     b.push(f(i, a[i]));
@@ -53,13 +53,13 @@ exports.forE = function (a, f) {
   return b;
 };
 
-exports.forEachE = function (a, f) {
+export const forEachE = function (a, f) {
   for (var i = 0; i < a.length; i++) {
     f(a[i]);
   }
 };
 
-exports.forInE = function (o, f) {
+export const forInE = function (o, f) {
   var ks = Object.keys(o);
   for (var i = 0; i < ks.length; i++) {
     var k = ks[i];
@@ -67,13 +67,13 @@ exports.forInE = function (o, f) {
   }
 };
 
-exports.replicateE = function (n, f) {
+export const replicateE = function (n, f) {
   for (var i = 0; i < n; i++) {
     f();
   }
 };
 
-exports.diffWithIxE = function (fnObject, a1, a2, f1, f2, f3) {
+export const diffWithIxE = function (fnObject, a1, a2, f1, f2, f3) {
   // console.log("This fails in chunking because:", fnObject, a1, a2, f1, f2, f3);
   var actions = [];
   var a3 = [];
@@ -100,7 +100,7 @@ exports.diffWithIxE = function (fnObject, a1, a2, f1, f2, f3) {
   return a3;
 };
 
-exports.strMapWithIxE = function (as, fk, f) {
+export const strMapWithIxE = function (as, fk, f) {
   var o = {};
   var m = {};
   for (var i = 0; i < as.length; i++) {
@@ -115,7 +115,7 @@ exports.strMapWithIxE = function (as, fk, f) {
   return o;
 };
 
-exports.diffWithKeyAndIxE = function (fnObject, o1, as, fk, f1, f2, f3) {
+export const diffWithKeyAndIxE = function (fnObject, o1, as, fk, f1, f2, f3) {
   var o2 = {};
   var actions = [];
   for (var i = 0; i < as.length; i++) {
@@ -139,7 +139,7 @@ exports.diffWithKeyAndIxE = function (fnObject, o1, as, fk, f1, f2, f3) {
   return o2;
 };
 
-exports.diffPropWithKeyAndIxE = function (fnObject, o1, as, fk, f1, f2, f3, el) {
+export const diffPropWithKeyAndIxE = function (fnObject, o1, as, fk, f1, f2, f3, el) {
   var removedProps = [];
   var o2 = {};
   var updatedProps = {}
@@ -172,7 +172,7 @@ exports.diffPropWithKeyAndIxE = function (fnObject, o1, as, fk, f1, f2, f3, el) 
   return o2;
 };
 
-exports.diffArrayOfObjects = function (fnObject, listState, el, oldArray, newArray, updatedProps) {
+export const diffArrayOfObjects = function (fnObject, listState, el, oldArray, newArray, updatedProps) {
   // TODO :: Optimise with old Array + list State in the future;
   var hasDiff = false
   if(oldArray.length != newArray.length) {
@@ -193,31 +193,31 @@ exports.diffArrayOfObjects = function (fnObject, listState, el, oldArray, newArr
   }
 }
 
-exports.refEq = function (a, b) {
+export const refEq = function (a, b) {
   return a === b;
 };
 
-exports.createTextNode = function (s) {
+export const createTextNode = function (s) {
   return {type: "textView", children: [], props: {text: s}}
 };
 
-exports.setTextContent = function (s, n) {
+export const setTextContent = function (s, n) {
   n.textContent = s;
 };
 
-exports.createElement = function (fnObject, ns, name, elemType) {
+export const createElement = function (fnObject, ns, name, elemType) {
   return {type: name, children: [], props: {}, __ref: fnObject.createPrestoElement(), elemType : elemType ? elemType : undefined};
 };
 
-exports.createChunkedElement = function(fnObject, ns, name) {
+export const createChunkedElement = function(fnObject, ns, name) {
   return {type: name, chunkedLayout: true, children: [], layouts: [], props: {}, __ref: fnObject.createPrestoElement()};
 }
 
-exports.createMicroapp = function (fnObject, requestId, service ) {
+export const createMicroapp = function (fnObject, requestId, service ) {
   return {type: "microapp", children: [], props: {}, requestId : requestId, __ref: fnObject.createPrestoElement(), service : service};
 };
 
-exports.insertChildIx = function (obj, type, i, a, b, keyId) {
+export const insertChildIx = function (obj, type, i, a, b, keyId) {
   var n = (b.children[i]) || {__ref: {__id: "-1"}};
   if (!a)
     console.warn("CUSTOM VDOM ERROR !! : ", "Trying to add undefined element to ", b);
@@ -248,7 +248,7 @@ exports.insertChildIx = function (obj, type, i, a, b, keyId) {
   a.parentNode = b;
 };
 
-exports.insertChunkIx = function(obj, opType, index, child, parentNode) {
+export const insertChunkIx = function(obj, opType, index, child, parentNode) {
   var n = (parentNode.children[index]) || {__ref: {__id: "-1"}};
   if (!child)
     console.warn("CUSTOM VDOM ERROR !! : ", "Trying to add undefined element to ", parentNode);
@@ -264,7 +264,7 @@ exports.insertChunkIx = function(obj, opType, index, child, parentNode) {
   }
 }
 
-exports.diffChunkWithIxE = function(fnObject, a1, a2, f1, f2, f3) {
+export const diffChunkWithIxE = function(fnObject, a1, a2, f1, f2, f3) {
   var actions = [];
   var a3 = [];
   var l1 = a1.length;
@@ -290,7 +290,7 @@ exports.diffChunkWithIxE = function(fnObject, a1, a2, f1, f2, f3) {
   return a3;
 }
 
-exports.removeChild = function (fnObject, a, b) {
+export const removeChild = function (fnObject, a, b) {
   var childIndex = -1;
 
   if (b && a.parentNode.__ref.__id === b.__ref.__id) {
@@ -308,7 +308,7 @@ exports.removeChild = function (fnObject, a, b) {
   }
 };
 
-exports.parentNode = function (a) {
+export const parentNode = function (a) {
   if (a.parentNode.props.__removed) {
     a.props.__removed = true;
     return null;
@@ -317,7 +317,7 @@ exports.parentNode = function (a) {
   }
 };
 
-exports.setAttribute = function (ns, attr, val, el) {
+export const setAttribute = function (ns, attr, val, el) {
   if (ns != null) {
     el.setAttributeNS(ns, attr, val);
   } else {
@@ -325,7 +325,7 @@ exports.setAttribute = function (ns, attr, val, el) {
   }
 };
 
-exports.removeAttribute = function (ns, attr, el) {
+export const removeAttribute = function (ns, attr, el) {
   if (ns != null) {
     el.removeAttributeNS(ns, attr);
   } else {
@@ -333,7 +333,7 @@ exports.removeAttribute = function (ns, attr, el) {
   }
 };
 
-exports.addEventListener = function (fnObject, pr, ev, listener, el) {
+export const addEventListener = function (fnObject, pr, ev, listener, el) {
   try{
     if((typeof fnObject.manualEventsName != "undefined") &&
       (Array.isArray(fnObject.manualEventsName)) &&
@@ -351,14 +351,14 @@ exports.addEventListener = function (fnObject, pr, ev, listener, el) {
   }
 };
 
-exports.removeEventListener = function (ev, listener, el) {
+export const removeEventListener = function (ev, listener, el) {
    // el.removeEventListener(ev, listener, false);
    delete el.props[ev];
 };
 
-exports.jsUndefined = void 0;
+export const jsUndefined = void 0;
 
-exports.generateUUID = function() {
+export const generateUUID = function() {
   function s4() {
           return Math.floor((1 + Math.random()) * 0x10000)
                   .toString(16)
