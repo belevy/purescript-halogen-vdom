@@ -199,7 +199,7 @@ foreign import setTextContent
   ∷ EFn.EffectFn2 String DOM.Node Unit
 
 foreign import createElement
-  ∷ EFn.EffectFn4 FnObject (Nullable Namespace) ElemName String DOM.Element
+  ∷ EFn.EffectFn3 FnObject (Nullable Namespace) ElemName DOM.Element
 
 foreign import createSubScreen
   ∷ forall a w. EFn.EffectFn3 FnObject a w DOM.Element
@@ -213,7 +213,7 @@ foreign import createMicroapp
 foreign import generateUUID :: Effect String
 
 foreign import insertChildIx
-  ∷ forall a. EFn.EffectFn6 a String Int DOM.Node DOM.Node String Unit
+  ∷ forall a. EFn.EffectFn5 a String Int DOM.Node DOM.Node Unit
 
 foreign import insertChunkIx
   ∷ forall a. EFn.EffectFn5 a String Int ({ shimmer :: DOM.Node, layout :: DOM.Node }) DOM.Node Unit

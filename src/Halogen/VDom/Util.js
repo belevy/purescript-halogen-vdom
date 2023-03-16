@@ -27,13 +27,7 @@ exports.unsafeSetAny = function (key, val, obj) {
 };
 
 exports.unsafeSetProp = function (key, val, obj) {
-  if(key == "id2"){
-    obj.__ref = {__id : val}
-    obj.props.id = val
-    delete obj.props.id2
-  } else {
-    obj.props[key] = val;
-  }
+  obj.props[key] = val;
 };
 
 exports.removeProperty = function (key, val, obj) {
@@ -106,10 +100,6 @@ exports.strMapWithIxE = function (as, fk, f) {
   for (var i = 0; i < as.length; i++) {
     var a = as[i];
     var k = fk(a);
-    if(k=="prop/id2"){
-      f(k,i,m,a)
-      continue
-    }
     o[k] = f(k, i, m, a);
   }
   return o;
@@ -162,10 +152,7 @@ exports.diffPropWithKeyAndIxE = function (fnObject, o1, as, fk, f1, f2, f3, el) 
     removedProps.push(k);
   }
   if (replace) {
-    for(var key in updatedProps) {
-      el.props[key] = updatedProps[key];
-    }
-    fnObject.replaceView(el, "", removedProps);
+    fnObject.replaceView(el, removedProps);
   } else if(Object.keys(updatedProps).length > 0) {
     fnObject.updateProperties(el, updatedProps);
   }
@@ -205,8 +192,8 @@ exports.setTextContent = function (s, n) {
   n.textContent = s;
 };
 
-exports.createElement = function (fnObject, ns, name, elemType) {
-  return {type: name, children: [], props: {}, __ref: fnObject.createPrestoElement(), elemType : elemType ? elemType : undefined};
+exports.createElement = function (fnObject, ns, name) {
+  return {type: name, children: [], props: {}, __ref: fnObject.createPrestoElement()};
 };
 
 exports.createSubScreen = function (fnObject, machine, screen) {
@@ -221,7 +208,7 @@ exports.createMicroapp = function (fnObject, requestId, service ) {
   return {type: "microapp", children: [], props: {}, requestId : requestId, __ref: fnObject.createPrestoElement(), service : service};
 };
 
-exports.insertChildIx = function (obj, type, i, a, b, keyId) {
+exports.insertChildIx = function (obj, type, i, a, b) {
   var n = (b.children[i]) || {__ref: {__id: "-1"}};
   if (!a)
     console.warn("CUSTOM VDOM ERROR !! : ", "Trying to add undefined element to ", b);
@@ -229,14 +216,10 @@ exports.insertChildIx = function (obj, type, i, a, b, keyId) {
   if (n === a) {
     return;
   }
-  if(keyId != ""){
-    a.keyId = keyId;
-  }
+
   if (type !== "patch") {
-    if((!window.parent.generateVdom) || a.elemType == "elem" || a.elemType == "keyed"){
-      a.parentNode = b;
-      b.children.splice(i, 0, a);
-    }
+    a.parentNode = b;
+    b.children.splice(i, 0, a);
 
     return;
   }
@@ -351,7 +334,7 @@ exports.addEventListener = function (fnObject, pr, ev, listener, el) {
   }
   el.props[ev] = listener;
   if(pr == "patch") {
-    fnObject.replaceView(el, ev, []);
+    fnObject.replaceView(el, []);
   }
 };
 

@@ -7,7 +7,6 @@ module Halogen.VDom.DOM.Prop
   , propFromInt
   , propFromNumber
   , buildProp
-  , propFromAny
   ) where
 
 import Prelude
@@ -75,9 +74,6 @@ propFromInt = unsafeCoerce
 
 propFromNumber ∷ Number → PropValue
 propFromNumber = unsafeCoerce
-
-propFromAny :: forall a. a -> PropValue
-propFromAny = unsafeCoerce
 
 -- | A `Machine`` for applying attributes, properties, and event handlers.
 -- | An emitter effect must be provided to respond to events. For example,
