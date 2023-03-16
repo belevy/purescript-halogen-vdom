@@ -21,6 +21,7 @@ module Halogen.VDom.Util
   , strMapWithIxE
   , refEq
   , createTextNode
+  , createSubScreen
   , setTextContent
   , createElement
   , createMicroapp
@@ -50,7 +51,8 @@ import Foreign.Object (Object)
 import Foreign.Object as Object
 import Foreign.Object.ST (STObject)
 import Foreign.Object.ST as STObject
-import Halogen.VDom.Types (ElemName, FnObject, Namespace)
+import Halogen.VDom.Types (ElemName, FnObject, Namespace, ShimmerHolder, VDom(..))
+import Halogen.VDom.Machine (Step)
 import Unsafe.Coerce (unsafeCoerce)
 import Web.DOM.Element (Element) as DOM
 import Web.DOM.Node (Node) as DOM
@@ -197,7 +199,10 @@ foreign import setTextContent
   ∷ EFn.EffectFn2 String DOM.Node Unit
 
 foreign import createElement
-  ∷ EFn.EffectFn4 FnObject (Nullable Namespace) ElemName String DOM.Element
+  ∷ EFn.EffectFn3 FnObject (Nullable Namespace) ElemName DOM.Element
+
+foreign import createSubScreen
+  ∷ forall a w. EFn.EffectFn3 FnObject a w DOM.Element
 
 foreign import createChunkedElement
   ∷ EFn.EffectFn3 FnObject (Nullable Namespace) ElemName DOM.Element
@@ -208,7 +213,7 @@ foreign import createMicroapp
 foreign import generateUUID :: Effect String
 
 foreign import insertChildIx
-  ∷ forall a. EFn.EffectFn6 a String Int DOM.Node DOM.Node String Unit
+  ∷ forall a. EFn.EffectFn5 a String Int DOM.Node DOM.Node Unit
 
 foreign import insertChunkIx
   ∷ forall a. EFn.EffectFn5 a String Int ({ shimmer :: DOM.Node, layout :: DOM.Node }) DOM.Node Unit

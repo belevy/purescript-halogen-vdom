@@ -7,7 +7,6 @@ module Halogen.VDom.DOM.Prop
   , propFromInt
   , propFromNumber
   , buildProp
-  , propFromAny
   ) where
 
 import Prelude
@@ -46,7 +45,7 @@ data Prop a
 instance functorProp ∷ Functor Prop where
   map f (Handler ty g) = Handler ty (map f <$> g)
   map f (Ref g) = Ref (map f <$> g)
-  map _ p = unsafeCoerce p
+  map f p = unsafeCoerce p
 
 data ElemRef a
   = Created a
@@ -76,9 +75,6 @@ propFromInt = unsafeCoerce
 propFromNumber ∷ Number → PropValue
 propFromNumber = unsafeCoerce
 
-propFromAny :: forall a. a -> PropValue
-propFromAny = unsafeCoerce
-
 -- | A `Machine`` for applying attributes, properties, and event handlers.
 -- | An emitter effect must be provided to respond to events. For example,
 -- | to allow arbitrary effects in event handlers, one could use `id`.
@@ -92,7 +88,7 @@ buildProp emit fnObject el = renderProp
   where
   renderProp = EFn.mkEffectFn1 \ps1 → do
     events ← Util.newMutMap
-    _ ← Util.newMutMap
+    props ← Util.newMutMap
     listData ← Util.newMutMap
     ps1' ← EFn.runEffectFn3 Util.strMapWithIxE ps1 propToStrKey (applyProp "render" events)
     let
@@ -160,7 +156,7 @@ buildProp emit fnObject el = renderProp
       Ref f → do
         EFn.runEffectFn1 mbEmit (f (Created el))
         pure v
-      BHandler _ behavior → do
+      BHandler ty behavior → do
          EFn.runEffectFn1 mbEmit (behavior unit)
          pure v
       Payload payload -> do
